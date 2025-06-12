@@ -6,6 +6,7 @@ using TMPro;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
 public class SimpleShoot : MonoBehaviour
+
 {   
     public int maxAmmo = 10; // Maximum ammo in the gun
     private int currentAmmo; // Current ammo in the gun
@@ -101,7 +102,7 @@ public class SimpleShoot : MonoBehaviour
     }
 
     //This function creates the bullet behavior
-    void Shoot()
+    public void Shoot()
     {
         //cancels if there's no bullet prefeb
         if (!bulletPrefab || currentAmmo <= 0)
@@ -116,14 +117,15 @@ public class SimpleShoot : MonoBehaviour
         }
 
         // Create and fire the bullet
-        Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation).GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
-
+        GameObject tempBullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation);
+        tempBullet.GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
+        
         if (muzzleFlashPrefab)
         {
             //Create the muzzle flash
             GameObject tempFlash;
             tempFlash = Instantiate(muzzleFlashPrefab, barrelLocation.position, barrelLocation.rotation);
-            
+
             //Destroy the muzzle flash effect
             Destroy(tempFlash, destroyTimer);
         }
@@ -165,7 +167,7 @@ public class SimpleShoot : MonoBehaviour
         Vector3 endPoint = hasHit ? hitInfo.point : barrelLocation.position + barrelLocation.forward * 100f;
         
         // Add slight offset to start point to avoid clipping
-        startPoint += barrelLocation.forward * 0.1f;
+        startPoint += barrelLocation.forward * 1.5f;
         
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
